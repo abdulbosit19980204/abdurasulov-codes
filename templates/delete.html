@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="alert alert-danger" role="alert">
+    Maqolani ochirasizmi
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-outline-danger">Yes</button>
+        <a href="/" class="btn btn-warning">No</a>
+    </form>
+</div>
+{% endblock %}

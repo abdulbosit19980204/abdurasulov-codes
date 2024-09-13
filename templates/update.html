@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Posts
+{% endblock %}
+{% block content %}
+<h2 class="mt-3 title"> Tahrirlash - {{ post.title }}</h2>
+<div class="card mt-4">
+    <div class="card-body">
+        <form method="post" action="/{{post.id}}/post-update/">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" value="{{form.title.value }}" class="form-control" name="title" id="title"
+                       placeholder="Post Title">
+            </div>
+            <div class="mb-3">
+                <label for="body" class="form-label">Post body</label>
+                <textarea class="form-control" id="body" name="body" rows="3">
+                    {{form.body.value}}
+                </textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
