@@ -21,6 +21,7 @@ class PostCreateView(LoginRequiredMixin, generic.CreateView):
     model = Post
     template_name = 'create.html'
     fields = ['title', 'body']
+    login_url = 'admin:login'
 
     def form_valid(self, form):
         form.instance.author = self.request.user

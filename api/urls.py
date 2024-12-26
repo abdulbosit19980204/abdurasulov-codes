@@ -1,8 +1,7 @@
-from tkinter.font import names
-
 from django.urls import path
-from api import views
+from api.views import PostListView
 
+app_name = 'api'
 urlpatterns = [
-    # path('', views.index, name='index'),
+    path('', PostListView.as_view(), name='list'),
 ]
