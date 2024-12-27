@@ -1,44 +1,18 @@
-from rest_framework.views import APIView, Response
 from rest_framework import generics
-from rest_framework import status
-from api.serializers import UserSerializer, PostSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from api.serializers import PostSerializer
 from blog.models import Post
-
-
-class PostListView(APIView):
-    def get(self, request):
-        posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
-
-
-class PostListAPIView(generics.ListAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-
-class PostCreateAPIView(generics.CreateAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+from .permissions import IsOwnerOrReadOnly
 
 
 class PostListCreateAPIView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-
-
-class PostDetailAPIView(generics.RetrieveAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-
-class PostDeleteAPIView(generics.DestroyAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    success_url = '/'
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class PostRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     success_url = '/'
