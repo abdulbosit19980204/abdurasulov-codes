@@ -4,6 +4,8 @@ from api.serializers import PostSerializer
 from blog.models import Post
 from .permissions import IsOwnerOrReadOnly
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class PostViewSet(ModelViewSet):
@@ -11,3 +13,6 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     success_url = '/'
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
+    search_fields = ['title', 'body']
+    filterset_fields = ['author']

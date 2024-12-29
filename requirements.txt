@@ -11,6 +11,7 @@ django-admin-adminlte==1.0.5
 django-adminlte3==0.1.6
 django-allauth==65.3.1
 django-cors-headers==4.6.0
+django-filter==24.3
 djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
 djoser==2.3.1

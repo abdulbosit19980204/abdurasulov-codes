@@ -24,9 +24,18 @@ class UserSerializer(ModelSerializer):
 
 
 class PostSerializer(ModelSerializer):
-    # author = UserSerializer(read_only=True)
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = Post
         fields = ['id', 'author', 'title', 'body', 'created', 'updated']
-        # depth = 1
+        depth = 1
+
+    def save(self, **kwargs):
+        post = Post(
+            author=self.context['request'].user,
+            title=self.validated_data['title'],
+            body=self.validated_data['body']
+        )
+        post.save()
+        return post
