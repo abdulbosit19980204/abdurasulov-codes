@@ -15,4 +15,5 @@ class PostViewSet(ModelViewSet):
     success_url = '/'
     filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend]
     search_fields = ['title', 'body']
-    filterset_fields = ['author']
+    ordering_fields = ['created', 'updated', 'author']
+    filterset_fields = ['author', 'created', 'updated']
