@@ -31,11 +31,9 @@ class PostSerializer(ModelSerializer):
         fields = ['id', 'author', 'title', 'body', 'created', 'updated']
         depth = 1
 
-    def save(self, **kwargs):
-        post = Post(
-            author=self.context['request'].user,
-            title=self.validated_data['title'],
-            body=self.validated_data['body']
-        )
-        post.save()
-        return post
+    def create(self, validated_data):
+        # Assign the currently authenticated user as the author
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            validated_data['author'] = request.user
+        return super().create(validated_data)
