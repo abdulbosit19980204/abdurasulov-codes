@@ -2,13 +2,19 @@ from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from .models import Post
+from .models import Post, Notification
 
 
 class PostListView(generic.ListView):
     model = Post
     template_name = 'list.html'
     context_object_name = 'posts'
+
+    def get_queryset(self):
+        d = {}
+        d['posts'] = Post.objects.all()
+        d['notifications'] = len(Notification.objects.filter(is_read=False, user=self.request.user))
+        return d
 
 
 class PostDetailView(generic.DetailView):
@@ -57,3 +63,4 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView
         if user == post.author:
             return True
         return False
+

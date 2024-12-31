@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from blog.models import Post
+from blog.models import Post, Notification
 from django.contrib.auth.models import User
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -37,3 +37,16 @@ class PostSerializer(ModelSerializer):
         if request and hasattr(request, 'user'):
             validated_data['author'] = request.user
         return super().create(validated_data)
+
+
+class NotificationSerializer(ModelSerializer):
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Notification
+        fields = ['id', 'user', 'message']
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context.get('request').user
+        notification = Notification.objects.create(**validated_data)
+        return notification
