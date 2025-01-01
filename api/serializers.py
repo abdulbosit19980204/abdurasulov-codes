@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from blog.models import Post, Notification
+from blog.models import Post, Notification, VisitorsAddressModel
 from django.contrib.auth.models import User
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -50,3 +50,14 @@ class NotificationSerializer(ModelSerializer):
         validated_data['user'] = self.context.get('request').user
         notification = Notification.objects.create(**validated_data)
         return notification
+
+
+class VisitorsAddressModelSerializer(ModelSerializer):
+    class Meta:
+        model = VisitorsAddressModel
+        fields = '__all__'
+    #
+    # def create(self, validated_data):
+    #     print(validated_data)
+    #     address = VisitorsAddressModel.objects.create(**validated_data)
+    #     return address

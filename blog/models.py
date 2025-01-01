@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save, pre_save
-from django.dispatch import receiver
 
 
 class Post(models.Model):
@@ -32,22 +30,24 @@ class Notification(models.Model):
         return f"{self.user.username}: {self.message}"
 
 
-"================== PRE SAVE and POST SAVE =============="
+class VisitorsAddressModel(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    status = models.CharField(max_length=200, blank=True, null=True)
+    country = models.CharField(max_length=200, blank=True, null=True)
+    countryCode = models.CharField(max_length=200, blank=True, null=True)
+    region = models.CharField(max_length=200, blank=True, null=True)
+    regionName = models.CharField(max_length=200, blank=True, null=True)
+    city = models.CharField(max_length=200, blank=True, null=True)
+    zip = models.CharField(max_length=200, blank=True, null=True)
+    lat = models.CharField(max_length=200, blank=True, null=True)
+    lon = models.CharField(max_length=200, blank=True, null=True)
+    timezone = models.CharField(max_length=200, blank=True, null=True)
+    isp = models.CharField(max_length=200, blank=True, null=True)
+    org = models.CharField(max_length=200, blank=True, null=True)
+    _as = models.CharField(max_length=200, blank=True, null=True)
+    query = models.CharField(max_length=200, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
-
-@receiver(pre_save, sender=Post)
-def pre_save_post(sender, instance, *args, **kwargs):
-    message = f"{instance.author.username} Sizni '{instance.title}' nomli postingiz yaratilishga tashlandi!"
-    notification = Notification(user=instance.author, message=message)
-    notification.save()
-
-
-@receiver(post_save, sender=Post)
-def post_save_post(sender, instance, *args, **kwargs):
-    message = f"{instance.author.username} tabriklaymiz Sizni '{instance.title}' nomli postingiz chop etildi!"
-
-    notification = Notification(user=instance.author, message=message)
-    notification.save()
-
-# pre_save.connect(pre_save_post, sender=Post, dispatch_uid="pre_save_post")
-# post_save.connect(post_save_post, sender=Post, dispatch_uid="post_save_post")
+    def __str__(self):
+        return f"{self.user}: {self.query}"

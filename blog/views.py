@@ -3,6 +3,7 @@ from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from .models import Post, Notification
+from .utils import ip_address
 
 
 class PostListView(generic.ListView):
@@ -11,6 +12,8 @@ class PostListView(generic.ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
+        ip = ip_address(self.request)
+        print("This is queryset ip:", ip)
         d = {}
         d['posts'] = Post.objects.all()
         d['notifications'] = len(Notification.objects.filter(is_read=False, user=self.request.user))
@@ -63,4 +66,3 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView
         if user == post.author:
             return True
         return False
-
