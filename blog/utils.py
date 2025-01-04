@@ -11,10 +11,11 @@ def ip_address(request):
     if ip is not None:
         data = json.loads(requests.get('http://ip-api.com/json/' + ip).text)
         # Add the user ID to the data dictionary
+        print(request.user.is_authenticated)
         if request.user.is_authenticated:
             data['user'] = request.user.id
         else:
-            data['user'] = "1"
+            data['user'] = 1
 
         # Pass the dictionary directly to the serializer
         serializer = VisitorsAddressModelSerializer(data=data)

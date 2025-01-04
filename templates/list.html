@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% block title %}
 Posts
 {% endblock %}
@@ -20,8 +20,8 @@ Posts
                     {{ post.title }}</p></a>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{{ post.get_absolute_url }}" type="button" class="btn btn-sm btn-outline-secondary">Read
-                            more</a>
+                        <a href="{{ post.get_absolute_url }}" type="button" class="btn btn-sm btn-outline-secondary">
+                            {% trans 'Read more' %}</a>
                         <button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi bi-heart"></i>
                         </button>
                     </div>

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+{% load i18n %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,20 +17,32 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="#" class="nav-link px-2 link-secondary">Blog</a></li>
-                <li><a href="#" class="nav-link px-2 link-body-emphasis">Inventory</a></li>
-                <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-                <li><a href="{% url 'posts:create' %}" class="nav-link px-2 link-body-emphasis">Post yozish</a></li>
+                <li><a href="#" class="nav-link px-2 link-body-emphasis">{% trans 'Customers' %}</a></li>
+                <li><a href="{% url 'posts:create' %}" class="nav-link px-2 link-body-emphasis">
+                    {% trans 'Create Post' %}</a></li>
                 <li>
                     <button type="button" class="btn btn-outline-primary position-relative">
-                        Notifications
+                        {% trans 'Notifications' %}
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             {{ posts.notifications }}
                             <!--                            <span class="visually-hidden">unread messages</span>-->
                         </span>
                     </button>
                 </li>
-            </ul>
 
+            </ul>
+            {% get_current_language as current_language %}
+            {% get_available_languages as available_languages %}
+            {% get_language_info_list for available_languages as langs %}
+            <button class="btn badge bg-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                {{current_language}}
+            </button>
+            <ul class="dropdown-menu">
+                {% for i in langs %}
+                <li><a class="dropdown-item" href="/{{i.code}}">{{i.name_local}}</a></li>
+                {% endfor %}
+            </ul>
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                 <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
             </form>

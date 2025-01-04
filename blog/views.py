@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from .models import Post, Notification
 from .utils import ip_address
+from django.utils.translation import gettext as _
 
 
 class PostListView(generic.ListView):
@@ -15,8 +16,10 @@ class PostListView(generic.ListView):
         ip = ip_address(self.request)
         print("This is queryset ip:", ip)
         d = {}
+        d['text'] = _("This is a simple text")
         d['posts'] = Post.objects.all()
-        d['notifications'] = len(Notification.objects.filter(is_read=False, user=self.request.user))
+        if self.request.user.is_authenticated:
+            d['notifications'] = len(Notification.objects.filter(is_read=False, user=self.request.user))
         return d
 
 
